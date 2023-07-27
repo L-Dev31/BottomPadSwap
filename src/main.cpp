@@ -135,6 +135,12 @@ WUPS_GET_CONFIG() {
 DECL_FUNCTION(int32_t, VPADRead, VPADChan chan, VPADStatus *buffer, uint32_t buffer_size, VPADReadError *error) {
     int32_t result = real_VPADRead(chan, buffer, buffer_size, error);
 
+if (!enabled) {
+        // If the plugin is disabled, simply call the original VPADRead function without any further processing.
+        
+        return result;
+    
+    }
     // Check for button combo to open Home Menu
     if ((buffer->hold & buttonComboHomeMenu) == buttonComboHomeMenu) {
         OSSendAppSwitchRequest(5, 0, 0); // Open Home Menu
